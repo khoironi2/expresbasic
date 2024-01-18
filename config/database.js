@@ -9,8 +9,8 @@ connection.connect(function(error){
     if(!!error){
         console.log(error);
     }else{
-        console.log('Connection success');
+        console.log('Berhasil terhubung ke database');
     }
 })
 
-module.exports = connection;
+module.exports = connection;         

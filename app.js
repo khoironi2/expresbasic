@@ -4,10 +4,18 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
+var flash = require('express-flash'); // import library express flash
+var session = require('express-session'); // import library express  session
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var kategoriRouter = require('./routes/kategori');
+
+var produkRouter = require('./routes/produk'); // import file routes produk dari folder routes
 
 var app = express();
+app.use(express.static("./public"));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,8 +27,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  cookie: {
+    maxAge: 6000
+  },
+  store: new session.MemoryStore,
+  saveUninitialized: true,
+  resave: 'true',
+  secret: 'secret'
+}))
+
+app.use(flash()) // gunakan flashh express menggunakan use
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/kategori', kategoriRouter);
+app.use('/produk', produkRouter); // gunakan rute produk didalam express menggunakan module use
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
